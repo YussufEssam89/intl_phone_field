@@ -117,6 +117,13 @@ class IntlPhoneField extends StatefulWidget {
   /// [Decoration.enabled] property.
   final bool enabled;
 
+  /// If false the picker dialog is "disabled": it ignores taps
+  /// and the drop down icon is hidden no matter [showDropdownIcon] value.
+  ///
+  /// If non-null this property overrides the [decoration]'s
+  /// [Decoration.enabled] property.
+  final bool pickerDialogEnabled;
+
   /// The appearance of the keyboard.
   ///
   /// This setting is only honored on iOS devices.
@@ -277,6 +284,7 @@ class IntlPhoneField extends StatefulWidget {
     this.dropdownDecoration = const BoxDecoration(),
     this.inputFormatters,
     this.enabled = true,
+    this.pickerDialogEnabled = true,
     this.keyboardAppearance,
     @Deprecated('Use searchFieldInputDecoration of PickerDialogStyle instead') this.searchText = 'Search country',
     this.dropdownIconPosition = IconPosition.leading,
@@ -454,7 +462,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
         decoration: widget.dropdownDecoration,
         child: InkWell(
           borderRadius: widget.dropdownDecoration.borderRadius as BorderRadius?,
-          onTap: widget.enabled ? _changeCountry : null,
+          onTap: widget.enabled && widget.pickerDialogEnabled ? _changeCountry : null,
           child: Padding(
             padding: widget.flagsButtonPadding,
             child: Row(
@@ -465,6 +473,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
                   width: 4,
                 ),
                 if (widget.enabled &&
+                    widget.pickerDialogEnabled &&
                     widget.showDropdownIcon &&
                     widget.dropdownIconPosition == IconPosition.leading) ...[
                   widget.dropdownIcon,
@@ -490,6 +499,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
                   ),
                 ),
                 if (widget.enabled &&
+                    widget.pickerDialogEnabled &&
                     widget.showDropdownIcon &&
                     widget.dropdownIconPosition == IconPosition.trailing) ...[
                   const SizedBox(width: 4),
