@@ -51,6 +51,9 @@ class IntlPhoneField extends StatefulWidget {
   /// But, if `disableLengthCheck` is set to `true`, your validator will have to check phone number length itself.
   final FutureOr<String?> Function(PhoneNumber?)? validator;
 
+  /// If false then cannot submit empty value
+  final bool nullable;
+
   /// {@macro flutter.widgets.editableText.keyboardType}
   final TextInputType keyboardType;
 
@@ -285,6 +288,7 @@ class IntlPhoneField extends StatefulWidget {
     this.inputFormatters,
     this.enabled = true,
     this.pickerDialogEnabled = true,
+    this.nullable = true,
     this.keyboardAppearance,
     @Deprecated('Use searchFieldInputDecoration of PickerDialogStyle instead') this.searchText = 'Search country',
     this.dropdownIconPosition = IconPosition.leading,
@@ -435,7 +439,9 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
         widget.onChanged?.call(phoneNumber);
       },
       validator: (value) {
-        if (value == null || !isNumeric(value)) return validatorMessage;
+        if(value == null || !isNumeric(value)) {
+          return widget.nullable ? validatorMessage : invalidNumberMessage
+        }
         if (!widget.disableLengthCheck) {
           return value.length >= _selectedCountry.minLength && value.length <= _selectedCountry.maxLength
               ? null
