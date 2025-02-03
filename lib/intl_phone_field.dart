@@ -332,12 +332,12 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
     // Initialize country list
     _countryList = widget.countries ?? countries;
 
-    // Create a modifiable copy
-    filteredCountries = List.from(_countryList);
-
     if (widget.exclude != null && widget.exclude!.isNotEmpty) {
-      filteredCountries.removeWhere((country) => widget.exclude!.contains(country.code));
+      _countryList.removeWhere((country) => widget.exclude!.contains(country.code));
     }
+
+    // Create a filtered copy
+    filteredCountries = _countryList;
 
     // Initial number setup logic remains the same...
     number = widget.initialValue ?? '';
