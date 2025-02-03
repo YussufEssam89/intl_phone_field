@@ -151,6 +151,9 @@ class IntlPhoneField extends StatefulWidget {
   /// List of Country to display see countries.dart for format
   final List<Country>? countries;
 
+  /// List of Country to exclude see countries.dart for format
+  final List<Country>? exclude;
+
   /// The decoration to show around the text field.
   ///
   /// By default, draws a horizontal line under the text field but can be
@@ -281,6 +284,7 @@ class IntlPhoneField extends StatefulWidget {
     this.validator,
     this.onChanged,
     this.countries,
+    this.exclude,
     this.onCountryChanged,
     this.onSaved,
     this.showDropdownIcon = true,
@@ -327,6 +331,9 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
     super.initState();
     _countryList = widget.countries ?? countries;
     filteredCountries = _countryList;
+    if(widget.exclude != null) {
+      filteredCountries.removeWhere((item) => widget.exclude!.contains(item));
+    }
     number = widget.initialValue ?? '';
     if (widget.initialCountryCode == null && number.startsWith('+')) {
       number = number.substring(1);
