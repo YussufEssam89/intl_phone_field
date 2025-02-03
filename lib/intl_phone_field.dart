@@ -152,7 +152,7 @@ class IntlPhoneField extends StatefulWidget {
   final List<Country>? countries;
 
   /// List of Country to exclude see countries.dart for format
-  final List<Country>? exclude;
+  final List<String>? exclude;
 
   /// The decoration to show around the text field.
   ///
@@ -329,15 +329,19 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
   @override
   void initState() {
     super.initState();
+    // Initialize country list
     _countryList = widget.countries ?? countries;
+
     // Create a modifiable copy
     filteredCountries = List.from(_countryList);
 
-    if (widget.exclude != null) {
-      filteredCountries.removeWhere((item) => widget.exclude!.contains(item));
+    if (widget.exclude != null && widget.exclude!.isNotEmpty) {
+      filteredCountries.removeWhere((country) => widget.exclude!.contains(country.code));
     }
 
+    // Initial number setup logic remains the same...
     number = widget.initialValue ?? '';
+
     if (widget.initialCountryCode == null && number.startsWith('+')) {
       number = number.substring(1);
       // parse initial value
