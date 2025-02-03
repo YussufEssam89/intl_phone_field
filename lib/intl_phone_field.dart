@@ -330,7 +330,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
   void initState() {
     super.initState();
     // Initialize country list
-    _countryList = widget.countries ?? countries;
+    _countryList = List.from(widget.countries ?? countries);
 
     if (widget.exclude != null && widget.exclude!.isNotEmpty) {
       _countryList.removeWhere((country) => widget.exclude!.contains(country.code));
